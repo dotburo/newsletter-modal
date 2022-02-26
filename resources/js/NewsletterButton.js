@@ -3,11 +3,16 @@ import DomElement from './DomElement';
 import defaults from './defaults';
 import NewsletterModal from './NewsletterModal';
 
+const CLASSNAME_TOGGLED = 'nws-toggled';
+
 let modalInstance = null;
 
 export default class extends DomElement {
     constructor(element, options = {}) {
         options = Object.assign({}, defaults, options);
+
+        options.classes = options.classes || {};
+        options.classes.toggled = CLASSNAME_TOGGLED;
 
         super(element, options);
 
@@ -31,12 +36,12 @@ export default class extends DomElement {
      */
     _handleSubscribeButton() {
         if (modalInstance) {
-            modalInstance.show();
+            modalInstance.toggle(true);
             return;
         }
 
         modalInstance = new NewsletterModal(
-            NewsletterModal.createElement(this.getOptions('classes').wrap),
+            NewsletterModal.createElement(),
             this.getOptions()
         );
     }

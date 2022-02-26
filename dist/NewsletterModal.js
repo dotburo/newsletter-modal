@@ -4,19 +4,21 @@
  * @return string HTML
  */
 const form = (options) => `
-<div class="nws-modal">
-    <div class="nws-msg"></div>
-    <form class="nws-form" action="#" method="post">
-        ${options.nameFields ? names(options.nameFields) : ''}
+<div class="nws-modal modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="nws-msg"></div>
+        <form class="nws-form" action="#" method="post">
+            ${options.nameFields ? names(options.nameFields) : ''}
 
-        ${email()}
+            ${email()}
 
-        ${options.gdprNotice ? gdpr(options.gdprNotice) : ''}
+            ${options.gdprNotice ? gdpr(options.gdprNotice) : ''}
 
-        <div class="row nws-row-submit">
-            <button type="submit" class="btn btn-primary">${options.submitButtonText}</button>
-        </div>
-    </form>
+            <div class="row">
+                <button type="submit" class="btn btn-primary nws-btn-submit">${options.submitButtonText}</button>
+            </div>
+        </form>
+    </div>
 </div>
 `;
 
@@ -68,10 +70,14 @@ const names = (options = {}) => `
 
 /**
  * @param {string} label
+ * @param {string} title
  * @return string HTML
  */
-const button = (label = 'Subscribe') => `
-<button type="button">${label}</button>
+const button = (label = 'Subscribe', title = '') => `
+<aside class="nws-cta">
+    ${title ? `<h1>${title}</h1>`: ''}
+    <button type="button" class="btn btn-primary nws-cta-button">${label}</button>
+</aside>
 `;
 
 /**
@@ -90,7 +96,7 @@ const
 
 class DomElement {
     constructor(element, options = {}) {
-        this._options = Object.assign({}, DEFAULTS, options);
+        this._options = options = Object.assign({}, DEFAULTS, options);
 
         this._toggled = false;
 
@@ -98,7 +104,9 @@ class DomElement {
 
         this._el = this._setElement(element);
 
-        this.toggle(options.toggled);
+        if (options.toggled) {
+            this.toggle(true);
+        }
     }
 
     /**
@@ -107,23 +115,17 @@ class DomElement {
      * @return DomElement
      */
     toggle(state = undefined) {
-        let classList = this._el.classList;
+        let classname = this.getOptions('classes').toggled;
 
-        if (state !== undefined) {
-            classList[state ? 'add' : 'remove'](this.getOptions('classes').toggled);
+        this._toggled = state !== undefined ? state : !this._toggled;
 
-            this._toggled = state;
-
-            return this;
-        }
-
-        this._toggled = classList.toggle(this.getOptions('classes').toggled);
+        this._el.classList[this._toggled ? 'add' : 'remove'](classname);
 
         return this;
     }
 
     /**
-     * Bind a (delegated) event
+     * Bind a (delegated) event.
      * @param {String} event
      * @param {Function} fn
      * @param {HTMLElement|Document} el
@@ -224,9 +226,6 @@ var defaults = {
         title: 'GDPR notice',
         body: 'explained',
     },
-    classes: {
-        toggled: 'nws-toggled'
-    }
 };
 
 class NewsletterModal extends DomElement {
@@ -236,10 +235,10 @@ class NewsletterModal extends DomElement {
         this._render();
     }
 
-    static createElement(classes = '') {
+    static createElement() {
         const el = document.createElement('div');
 
-        el.className = 'nws-wrap ' + classes;
+        el.className = 'nws-wrap modal';
 
         return el;
     }
@@ -316,11 +315,16 @@ class NewsletterModal extends DomElement {
     }
 }
 
+const CLASSNAME_TOGGLED = 'nws-toggled';
+
 let modalInstance = null;
 
 class NewsletterButton extends DomElement {
     constructor(element, options = {}) {
         options = Object.assign({}, defaults, options);
+
+        options.classes = options.classes || {};
+        options.classes.toggled = CLASSNAME_TOGGLED;
 
         super(element, options);
 
@@ -344,12 +348,12 @@ class NewsletterButton extends DomElement {
      */
     _handleSubscribeButton() {
         if (modalInstance) {
-            modalInstance.show();
+            modalInstance.toggle(true);
             return;
         }
 
         modalInstance = new NewsletterModal(
-            NewsletterModal.createElement(this.getOptions('classes').wrap),
+            NewsletterModal.createElement(),
             this.getOptions()
         );
     }

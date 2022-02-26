@@ -3,19 +3,21 @@
  * @return string HTML
  */
 export const form = (options) => `
-<div class="nws-modal">
-    <div class="nws-msg"></div>
-    <form class="nws-form" action="#" method="post">
-        ${options.nameFields ? names(options.nameFields) : ''}
+<div class="nws-modal modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="nws-msg"></div>
+        <form class="nws-form" action="#" method="post">
+            ${options.nameFields ? names(options.nameFields) : ''}
 
-        ${email()}
+            ${email()}
 
-        ${options.gdprNotice ? gdpr(options.gdprNotice) : ''}
+            ${options.gdprNotice ? gdpr(options.gdprNotice) : ''}
 
-        <div class="row">
-            <button type="submit" class="btn btn-primary nws-btn-submit">${options.submitButtonText}</button>
-        </div>
-    </form>
+            <div class="row">
+                <button type="submit" class="btn btn-primary nws-btn-submit">${options.submitButtonText}</button>
+            </div>
+        </form>
+    </div>
 </div>
 `;
 
@@ -67,10 +69,14 @@ const names = (options = {}) => `
 
 /**
  * @param {string} label
+ * @param {string} title
  * @return string HTML
  */
-export const button = (label = 'Subscribe') => `
-<button type="button">${label}</button>
+export const button = (label = 'Subscribe', title = '') => `
+<aside class="nws-cta">
+    ${title ? `<h1>${title}</h1>`: ''}
+    <button type="button" class="btn btn-primary nws-cta-button">${label}</button>
+</aside>
 `;
 
 /**

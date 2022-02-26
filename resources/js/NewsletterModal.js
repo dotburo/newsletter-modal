@@ -8,10 +8,10 @@ export default class NewsletterModal extends DomElement {
         this._render();
     }
 
-    static createElement(classes = '') {
+    static createElement() {
         const el = document.createElement('div');
 
-        el.className = 'nws-wrap ' + classes;
+        el.className = 'nws-wrap modal';
 
         return el;
     }

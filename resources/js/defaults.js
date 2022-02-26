@@ -7,7 +7,4 @@ export default {
         title: 'GDPR notice',
         body: 'explained',
     },
-    classes: {
-        toggled: 'nws-toggled'
-    }
 };

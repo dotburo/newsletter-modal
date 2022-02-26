@@ -9,7 +9,7 @@ const
 
 export default class DomElement {
     constructor(element, options = {}) {
-        this._options = Object.assign({}, DEFAULTS, options);
+        this._options = options = Object.assign({}, DEFAULTS, options);
 
         this._toggled = false;
 
@@ -17,7 +17,9 @@ export default class DomElement {
 
         this._el = this._setElement(element);
 
-        this.toggle(options.toggled);
+        if (options.toggled) {
+            this.toggle(true);
+        }
     }
 
     /**
@@ -26,23 +28,17 @@ export default class DomElement {
      * @return DomElement
      */
     toggle(state = undefined) {
-        let classList = this._el.classList;
+        let classname = this.getOptions('classes').toggled;
 
-        if (state !== undefined) {
-            classList[state ? 'add' : 'remove'](this.getOptions('classes').toggled);
+        this._toggled = state !== undefined ? state : !this._toggled;
 
-            this._toggled = state;
-
-            return this;
-        }
-
-        this._toggled = classList.toggle(this.getOptions('classes').toggled);
+        this._el.classList[this._toggled ? 'add' : 'remove'](classname);
 
         return this;
     }
 
     /**
-     * Bind a (delegated) event
+     * Bind a (delegated) event.
      * @param {String} event
      * @param {Function} fn
      * @param {HTMLElement|Document} el
