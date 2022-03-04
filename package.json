@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Simple vanilla JS newsletter subscription modal",
     "homepage": "https://github.com/dotburo/newsletter-modal#readme",
-    "author": "dotburo <code@dotburo.org>",
+    "author": "dotburo <code@dotburo.org> (https://dotburo.org)",
     "license": "GPL-3.0+",
     "repository": {
         "type": "git",

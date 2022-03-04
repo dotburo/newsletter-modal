@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Newsletter modal</title>
+</head>
+<body>
+<div class="root-el"></div>
+<script type="module">
+    import {nodeListArray} from "../src/js/helpers.js";
+    import NewsletterModal from "../dist/NewsletterModal.js";
+
+    const rootElements = document.getElementsByClassName('root-el');
+
+    if (rootElements.length) {
+        nodeListArray(rootElements).forEach(el => {
+            new NewsletterModal(el, {
+                url: '/api/v1/newsletter'
+            });
+        })
+    }
+</script>
+</body>
+</html>
