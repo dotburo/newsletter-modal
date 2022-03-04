@@ -3,7 +3,7 @@ import {terser} from 'rollup-plugin-terser';
 import {eslint} from 'rollup-plugin-eslint';
 
 export default [{
-    input: 'resources/js/NewsletterButton.js',
+    input: 'src/js/NewsletterButton.js',
     output: [{
         file: 'dist/NewsletterModal.js',
         format: 'es',
