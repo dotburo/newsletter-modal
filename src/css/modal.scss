@@ -1,0 +1,74 @@
+/* Not included Bootstrap rules ------------------------------------------ */
+
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Modal main ------------------------------------------------------------ */
+
+.nws-toggled {
+    display: block !important;
+    background-color: rgba(0, 0, 0, .45);
+}
+
+/* Modal content --------------------------------------------------------- */
+
+.modal-header {
+    .modal-title {
+        margin: 0;
+    }
+    .close {
+        padding: 1rem 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 1;
+        cursor: pointer;
+    }
+}
+
+/* Modal content --------------------------------------------------------- */
+
+.nws-modal form.modal-content {
+    .input-group {
+        padding-bottom: inherit;
+    }
+    input[type="checkbox"].is-invalid ~ .invalid-feedback {
+        display: inline;
+    }
+}
+
+/* Modal footer ---------------------------------------------------------- */
+
+.modal-footer {
+    justify-content: space-between;
+
+    .nws-gdpr-btn {
+        text-decoration: none !important;
+    }
+    .btn-primary {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .nws-flex-break {
+        flex-basis: 100%;
+        margin: 0;
+    }
+    .nws-gdpr-txt {
+        overflow: hidden;
+        margin: 0;
+        height: 0;
+        font-size: 75%;
+    }
+    .nws-gdpr-txt-inner {
+        padding: 1rem .25rem 0 .25rem;
+    }
+}

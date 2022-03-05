@@ -2,6 +2,9 @@ import {button} from './templates';
 import DomElement from './DomElement';
 import defaults from './defaults';
 import NewsletterModal from './NewsletterModal';
+import NewsletterValidator from './NewsletterValidator';
+
+import '../css/bootstrapped.scss';
 
 const CLASSNAME_TOGGLED = 'nws-toggled';
 
@@ -11,6 +14,7 @@ export default class extends DomElement {
     constructor(element, options = {}) {
         options = Object.assign({}, defaults, options);
 
+        options.fields = options.fields || {};
         options.classes = options.classes || {};
         options.classes.toggled = CLASSNAME_TOGGLED;
 
@@ -42,7 +46,8 @@ export default class extends DomElement {
 
         modalInstance = new NewsletterModal(
             NewsletterModal.createElement(),
-            this.getOptions()
+            this.getOptions(),
+            new NewsletterValidator()
         );
     }
 }

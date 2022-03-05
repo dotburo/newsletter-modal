@@ -1,4 +1,5 @@
 import pkg from './package.json';
+import scss from 'rollup-plugin-scss';
 import {terser} from 'rollup-plugin-terser';
 import {eslint} from 'rollup-plugin-eslint';
 
@@ -12,7 +13,10 @@ export default [{
         sourcemap: true
     }],
     plugins: [
+        scss({
+            output: 'dist/bootstrapped.css',
+        }),
         eslint(),
-        //terser()
+        terser()
     ]
 }];

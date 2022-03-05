@@ -45,7 +45,6 @@ export default class DomElement {
      * @return DomElement
      */
     on(event, fn, el = null) {
-
         (el || this._el).addEventListener(event, fn = fn.bind(this), true);
 
         this._events.push({
@@ -63,6 +62,14 @@ export default class DomElement {
      */
     getElement(selector = '') {
         return !selector ? this._el : this._el.querySelector(selector);
+    }
+
+    /**
+     * Check if the root element has child one.
+     * @return {Boolean}
+     */
+    hasElement(selector) {
+        return !!this._el.querySelector(selector);
     }
 
     /**
