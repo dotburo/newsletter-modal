@@ -1379,6 +1379,9 @@ input[type=button].btn-block {
 .nws-modal form.modal-content .nws-gdpr-check input[type=checkbox].is-invalid ~ .invalid-feedback {
   display: inline;
 }
+.nws-modal form.modal-content .nws-msg {
+  padding-bottom: inherit;
+}
 .nws-modal form.modal-content .nws-msg-success {
   text-align: center;
   color: #28a745;

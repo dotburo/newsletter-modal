@@ -84,11 +84,17 @@ export default class NewsletterModal extends DomElement {
                     return this._message(this.getOptions('successMessage'), true)
                         .remove(this.getElement('.' + CLASSNAME_BTN_SUBMIT));
                 }
-
-                throw new Error(response.statusText);
             })
             .catch(error => {
-                this._message(error.message, false)
+                let msg;
+
+                try {
+                    msg = error.response.data.data.error.message;
+                } catch (err) {
+                    msg = error.response.statusText;
+                }
+
+                this._message(msg, false)
                     ._setLoading(false);
             });
     }
@@ -122,7 +128,7 @@ export default class NewsletterModal extends DomElement {
         if (state) {
             btn.innerHTML = spinner();
         } else {
-            btn.innerHTML = this.getOptions('submitButtonText');
+            btn.innerHTML = this.getOptions('buttons').submit.label;
         }
 
         return this;

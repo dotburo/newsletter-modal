@@ -49,6 +49,9 @@
             display: inline;
         }
     }
+    .nws-msg {
+        padding-bottom: inherit;
+    }
     .nws-msg-success {
         text-align: center;
         color: $success;
