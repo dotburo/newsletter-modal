@@ -1,18 +1,17 @@
+import {merge} from 'lodash-es';
 import {button} from './templates';
 import DomElement from './DomElement';
-import defaults from './defaults';
+import defaults, {CLASSNAME_TOGGLED} from './defaults';
 import NewsletterModal from './NewsletterModal';
 import NewsletterValidator from './NewsletterValidator';
 
 import '../css/bootstrapped.scss';
 
-const CLASSNAME_TOGGLED = 'nws-toggled';
-
 let modalInstance = null;
 
 export default class extends DomElement {
     constructor(element, options = {}) {
-        options = Object.assign({}, defaults, options);
+        options = merge({}, defaults, options);
 
         options.fields = options.fields || {};
         options.classes = options.classes || {};
@@ -28,7 +27,7 @@ export default class extends DomElement {
      * @protected
      */
     _render() {
-        this.getElement().innerHTML = button();
+        this.getElement().innerHTML = button(this.getOptions('buttons').open);
 
         this.on('click', this._handleSubscribeButton);
     }

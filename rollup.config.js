@@ -2,6 +2,9 @@ import pkg from './package.json';
 import scss from 'rollup-plugin-scss';
 import {terser} from 'rollup-plugin-terser';
 import eslint from '@rollup/plugin-eslint';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+
+const production = process.env.BUILD === 'production';
 
 export default [{
     input: 'src/js/NewsletterButton.js',
@@ -13,11 +16,11 @@ export default [{
         sourcemap: true
     }],
     plugins: [
+        nodeResolve(),
         scss({
             output: 'dist/bootstrapped.css',
-            outputStyle: process.env.BUILD === 'production' ? 'compressed' : null,
         }),
-        eslint(),
-        process.env.BUILD === 'production' ? terser() : null
-    ]
+        !production ? null : eslint(),
+        !production ? null : terser()
+    ].filter(p => p)
 }];

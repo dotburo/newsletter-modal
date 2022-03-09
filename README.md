@@ -23,7 +23,9 @@ nodeListArray(rootElements).forEach(el => {
 
 ### Styling options
 1. **If you are using Bootstrap and Sass**: just include the file `src/css/modal.scss` in your bundle.
+    - Make sure the bootstrap components modal, forms, input-group and buttons are included too.
 2. If not, include the file `dist/bootstrapped.css` in your project.
+    - This bundled css does not include the reboot bootstrap module, that is left to your project to do.
 
 ## All options
 ```js
@@ -33,7 +35,16 @@ new NewsletterModal(el, {
         'X-CSRF-TOKEN': 'sdjfsldfj'
     },
     title: 'Subscribe to our newsletter',
-    submitButtonText: 'Submit',
+    buttons: {
+        open: {
+            label: 'Subscribe',
+            classes: 'btn btn-primary',
+        },
+        submit: {
+            label: 'Submit',
+            classes: 'btn btn-primary'
+        }
+    },
     fields: {
         email: {
             label: 'Email',
@@ -54,7 +65,7 @@ new NewsletterModal(el, {
             invalid: 'Please provide a valid last name.'
         },
         gdprCheckbox: {
-            label: 'By subscribing to the newsletter I agree that data I provided will be stored by ...',
+            label: 'By subscribing to the newsletter I agree that ...',
             invalid: 'This is required.'
         },
         gdprNotice: {

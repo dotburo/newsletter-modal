@@ -1,5 +1,6 @@
-import {form, spinner} from './templates';
+import {form, spinner, subscribed} from './templates';
 import DomElement from './DomElement';
+import {CLASSNAME_BTN_SUBMIT} from './defaults';
 
 export default class NewsletterModal extends DomElement {
     constructor(element, options = {}, validator) {
@@ -38,7 +39,7 @@ export default class NewsletterModal extends DomElement {
             .on('click', this._handleClose)
             .on('keyup', this._handleClose, document.body);
 
-        if (this.hasElement('.nws-gdpr-txt')) {
+        if (this.hasElement('.nws-gdpr-btn')) {
             this.on('click', this._toggleGdpr, this.getElement('.nws-gdpr-btn'));
         }
     }
@@ -80,13 +81,14 @@ export default class NewsletterModal extends DomElement {
         this._submit(this.validator.getData())
             .then(response => {
                 if (response.ok) {
-                    return this._message(this.getOptions('successMessage'));
+                    return this._message(this.getOptions('successMessage'), true)
+                        .remove(this.getElement('.' + CLASSNAME_BTN_SUBMIT));
                 }
 
                 throw new Error(response.statusText);
             })
             .catch(error => {
-                this._message(error.message)
+                this._message(error.message, false)
                     ._setLoading(false);
             });
     }
@@ -101,6 +103,7 @@ export default class NewsletterModal extends DomElement {
         return window.fetch(this.getOptions('url'), {
             method: 'POST',
             headers: Object.assign(this.getOptions('headers'), {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }),
             body: JSON.stringify(data)
@@ -128,11 +131,21 @@ export default class NewsletterModal extends DomElement {
     /**
      * Show an error or success message in the form.
      * @param {string} msg
+     * @param {boolean} success
      * @return {NewsletterModal}
      * @private
      */
-    _message(msg) {
-        this.getElement('.nws-msg').textContent = msg;
+    _message(msg, success) {
+        if (success) {
+            this.getElement('.modal-body').innerHTML = subscribed(this.getOptions('messages').subscribed);
+
+            return this;
+        }
+
+        const el = this.getElement('.nws-msg');
+
+        el.className += ' text-danger';
+        el.textContent = msg;
 
         return this;
     }
@@ -142,7 +155,9 @@ export default class NewsletterModal extends DomElement {
      * @return void
      * @private
      */
-    _toggleGdpr() {
+    _toggleGdpr(e) {
+        e.preventDefault();
+
         const notice = this.getElement('.nws-gdpr-txt');
 
         if (notice.classList.toggle('toggled')) {

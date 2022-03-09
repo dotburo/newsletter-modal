@@ -41,8 +41,18 @@
     .input-group {
         padding-bottom: inherit;
     }
-    input[type="checkbox"].is-invalid ~ .invalid-feedback {
-        display: inline;
+    .nws-gdpr-check {
+        label {
+            display: inline;
+        }
+        input[type="checkbox"].is-invalid ~ .invalid-feedback {
+            display: inline;
+        }
+    }
+    .nws-msg-success {
+        text-align: center;
+        color: $success;
+        stroke: $success;
     }
 }
 

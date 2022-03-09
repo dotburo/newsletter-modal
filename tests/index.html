@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Newsletter modal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="../dist/bootstrapped.css">
 </head>
 <body>
@@ -21,9 +22,7 @@
                     'X-CSRF-TOKEN': 'token'
                 },
                 fields: {
-                    email: {
-                        icon: 'ico-mail'
-                    },
+                    email: true,
                     gdprCheckbox: {
                         label: 'By subscribing to the newsletter I agree that data I provided will be stored by ...'
                     },

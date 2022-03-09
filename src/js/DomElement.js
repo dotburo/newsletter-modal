@@ -1,3 +1,5 @@
+import {merge} from 'lodash-es';
+
 const
     d = document,
     DEFAULTS = {
@@ -9,7 +11,7 @@ const
 
 export default class DomElement {
     constructor(element, options = {}) {
-        this._options = options = Object.assign({}, DEFAULTS, options);
+        this._options = options = merge({}, DEFAULTS, options);
 
         this._toggled = false;
 
@@ -58,7 +60,7 @@ export default class DomElement {
 
     /**
      * Return the main wrapping element.
-     * @return {Element}
+     * @return {HTMLElement}
      */
     getElement(selector = '') {
         return !selector ? this._el : this._el.querySelector(selector);
@@ -82,23 +84,29 @@ export default class DomElement {
     }
 
     /**
-     * Unbind all events and nullify references
+     * Unbind all events and nullify references.
      * @return void
      */
-    remove() {
+    remove(el = this._el) {
         this._events = this._events.filter(event => {
-            return (event.el || this._el).removeEventListener(event.name, event.fn, true);
+            if (event.el === el) {
+                el.removeEventListener(event.name, event.fn, true);
+                return false;
+            }
+            return true;
         });
 
-        this._el.parentNode.removeChild(this._el);
+        el.parentNode.removeChild(el);
 
-        this._el = null;
+        if (el === this._el) {
+            this._el = null;
 
-        this._options = DEFAULTS;
+            this._options = DEFAULTS;
+        }
     }
 
     /**
-     * Query the element in the DOM if its a string
+     * Query the element in the DOM if its a string.
      * @param {Element|String} el
      * @return {Element|null}
      * @protected
@@ -114,7 +122,7 @@ export default class DomElement {
     }
 
     /**
-     * Communicate changes
+     * Communicate changes.
      * @param {String} name
      * @param {Object|null} detail
      * @protected
