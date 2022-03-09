@@ -1381,6 +1381,7 @@ input[type=button].btn-block {
 }
 .nws-modal form.modal-content .nws-msg {
   padding-bottom: inherit;
+  display: none;
 }
 .nws-modal form.modal-content .nws-msg-success {
   text-align: center;

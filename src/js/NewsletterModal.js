@@ -69,7 +69,8 @@ export default class NewsletterModal extends DomElement {
     _handleSubmit(e) {
         e.preventDefault();
 
-        this._setLoading(true);
+        this._setLoading(true)
+            ._clearMessage();
 
         const form = this.getElement('form');
 
@@ -152,6 +153,18 @@ export default class NewsletterModal extends DomElement {
 
         el.className += ' text-danger';
         el.textContent = msg;
+        el.style.display = 'block';
+
+        return this;
+    }
+
+    /**
+     * Hide the message element.
+     * @return {NewsletterModal}
+     * @private
+     */
+    _clearMessage() {
+        this.getElement('.nws-msg').style.display = 'none';
 
         return this;
     }
