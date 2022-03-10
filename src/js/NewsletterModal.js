@@ -80,14 +80,13 @@ export default class NewsletterModal extends DomElement {
         }
 
         this._submit(this.validator.getData())
-            .then(response => {
-                if (response.ok) {
-                    return this._message(response, true)
-                        .remove(this.getElement('.' + CLASSNAME_BTN_SUBMIT));
-                }
+            .then(r => {
+                return this._message(r.json, r.response.ok, r.response)
+                    ._setLoading(false)
+                    .remove(this.getElement('.' + CLASSNAME_BTN_SUBMIT));
             })
             .catch(error => {
-                this._message(error.response, false)
+                this._message(error, false)
                     ._setLoading(false);
             });
     }
@@ -99,6 +98,8 @@ export default class NewsletterModal extends DomElement {
      * @private
      */
     _submit(data) {
+        let response;
+
         return window.fetch(this.getOptions('url'), {
             method: 'POST',
             headers: Object.assign(this.getOptions('headers'), {
@@ -106,6 +107,11 @@ export default class NewsletterModal extends DomElement {
                 'Content-Type': 'application/json',
             }),
             body: JSON.stringify(data)
+        }).then(r => {
+            response = r;
+            return r.json();
+        }).then(json => {
+            return {json, response};
         });
     }
 
@@ -129,14 +135,15 @@ export default class NewsletterModal extends DomElement {
 
     /**
      * Show an error or success message in the form.
-     * @param {Response} response
+     * @param {object} body
      * @param {boolean} success
+     * @param {Response} response
      * @return {NewsletterModal}
      * @private
      */
-    _message(response, success) {
+    _message(body, success, response) {
         let options = this.getOptions('messages'),
-            msg = options.parse(response);
+            msg = options.parse(body);
 
         if (typeof msg !== 'string') {
             msg = success ? options.subscribed : response.statusText;
