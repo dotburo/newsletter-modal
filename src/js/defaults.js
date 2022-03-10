@@ -31,5 +31,6 @@ export default {
     },
     messages: {
         subscribed: 'Thank you for subscribing!',
+        parse: () => null
     },
 };

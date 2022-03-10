@@ -82,20 +82,12 @@ export default class NewsletterModal extends DomElement {
         this._submit(this.validator.getData())
             .then(response => {
                 if (response.ok) {
-                    return this._message(this.getOptions('successMessage'), true)
+                    return this._message(response, true)
                         .remove(this.getElement('.' + CLASSNAME_BTN_SUBMIT));
                 }
             })
             .catch(error => {
-                let msg;
-
-                try {
-                    msg = error.response.data.data.error.message;
-                } catch (err) {
-                    msg = error.response.statusText;
-                }
-
-                this._message(msg, false)
+                this._message(error.response, false)
                     ._setLoading(false);
             });
     }
@@ -137,14 +129,21 @@ export default class NewsletterModal extends DomElement {
 
     /**
      * Show an error or success message in the form.
-     * @param {string} msg
+     * @param {Response} response
      * @param {boolean} success
      * @return {NewsletterModal}
      * @private
      */
-    _message(msg, success) {
+    _message(response, success) {
+        let options = this.getOptions('messages'),
+            msg = options.parse(response);
+
+        if (typeof msg !== 'string') {
+            msg = success ? options.subscribed : response.statusText;
+        }
+
         if (success) {
-            this.getElement('.modal-body').innerHTML = subscribed(this.getOptions('messages').subscribed);
+            this.getElement('.modal-body').innerHTML = subscribed(msg);
 
             return this;
         }
